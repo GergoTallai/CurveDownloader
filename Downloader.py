@@ -76,6 +76,7 @@ class CSV_Reader(Downloader):
                     case 8:
                         temperature.append(curve_datas.iat[j,i])
 
+        print('Tesz')
 
 #START MAIN
 if __name__ == "__main__":
