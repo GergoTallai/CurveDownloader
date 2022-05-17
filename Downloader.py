@@ -85,10 +85,6 @@ class CSV_Reader(Downloader):
         ax3.plot(time, speed, '-', label='Speed', color='black')
         ax3.spines['right'].set_position(('axes', 1.10))
 
-        # lns =lns1+lns2+lns3
-        # labs = [l.get_label() for l in lns]
-        # ax.legend(lns, labs, loc=0)
-
         ax1.grid()
         ax1.set_xlabel("Time (ms)")
         ax1.set_ylabel("Torque")
@@ -97,6 +93,7 @@ class CSV_Reader(Downloader):
         ax2.set_ylim(min(angle) * 0.9, max(angle) * 1.1)
         ax3.set_ylabel("Speed")
         ax3.set_ylim(min(speed) * 0.9, max(speed) * 1.1)
+        plt.subplots_adjust(right=0.8)
         plt.show()
 
 #START MAIN
