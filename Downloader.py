@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 import time
 import os
 
@@ -75,8 +76,28 @@ class CSV_Reader(Downloader):
                         current.append(curve_datas.iat[j,i])
                     case 8:
                         temperature.append(curve_datas.iat[j,i])
+        fig = plt.figure()
+        ax1 = fig.add_subplot()
+        ax1.plot(time, torque, '-', label='Torque', color='blue')
+        ax2 = ax1.twinx()
+        ax2.plot(time, angle, '-', label='Angle', color='red')
+        ax3 = ax1.twinx()
+        ax3.plot(time, speed, '-', label='Speed', color='black')
+        ax3.spines['right'].set_position(('axes', 1.10))
 
-        print('Tesz')
+        # lns =lns1+lns2+lns3
+        # labs = [l.get_label() for l in lns]
+        # ax.legend(lns, labs, loc=0)
+
+        ax1.grid()
+        ax1.set_xlabel("Time (ms)")
+        ax1.set_ylabel("Torque")
+        ax1.set_ylim(min(torque) * 0.9, max(torque) * 1.1)
+        ax2.set_ylabel("Angle")
+        ax2.set_ylim(min(angle) * 0.9, max(angle) * 1.1)
+        ax3.set_ylabel("Speed")
+        ax3.set_ylim(min(speed) * 0.9, max(speed) * 1.1)
+        plt.show()
 
 #START MAIN
 if __name__ == "__main__":
