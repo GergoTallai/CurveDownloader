@@ -1,0 +1,89 @@
+import requests
+import pandas as pd
+import matplotlib.pyplot as plt
+import time
+import os
+
+#GORBE MENTESE
+class Downloader(object):
+    file_path = ''
+    def downloader(self):
+        dest_folder = "curve" #MENTESI MAPPA
+        filename = "last_curve" #FAJL NEV
+        ip_address = '10.170.81.84'
+        url_address = 'http://{}/cgi-bin/cgiread?site=12&dlfile=/mnt/mmc/curvedata/graph.bin&dltype=csv'.format(ip_address)
+
+        #GORBE ELERESI UTVONAL
+        Downloader.file_path = os.getcwd() + "\\" + dest_folder + "\\" + filename
+
+        # MAPPA LETREHOZASA
+        if not os.path.exists(dest_folder):
+            os.makedirs(dest_folder)
+            print('folder created...')
+
+        start = time.perf_counter()
+
+        print('download started...')
+        get_bin = requests.get(url_address)
+        if get_bin.ok:
+            print("saving to..." + Downloader.file_path)
+            output = open(Downloader.file_path + '.csv', 'wb')
+            output.write(get_bin.content)
+            output.close()
+
+        finish = time.perf_counter()
+
+        print('download time: ', round(finish - start), 's')
+        CSV_Reader().csv_reader()
+
+#LETOLTOTT CSV BEOLVASA
+class CSV_Reader(Downloader):
+    def csv_reader(self):
+        print(Downloader.file_path + '.csv')
+        curve_datas = pd.read_csv(Downloader.file_path + '.csv', encoding = "ISO-8859-1")
+
+        #CSV ADATOK BETOLTESE ES LEVALOGATASA
+        headers = ['Time (ms)', 'Torque', 'Angle', 'Motor Torque', 'Motor Angle', 'Speed', 'Step', 'Current (A)', 'Temperature (C)']
+        time = []
+        torque = []
+        angle = []
+        motor_torque = []
+        motor_angle = []
+        speed = []
+        step = []
+        current = []
+        temperature = []
+
+        for i in range(0, len(curve_datas.columns)):
+            for j in range(0, curve_datas[curve_datas.columns[0]].count()):
+                match i:
+                    case 0:
+                        time.append(curve_datas.iat[j,i])
+                    case 1:
+                        torque.append(curve_datas.iat[j,i])
+                    case 2:
+                        angle.append(curve_datas.iat[j,i])
+                    case 3:
+                        motor_torque.append(curve_datas.iat[j,i])
+                    case 4:
+                        motor_angle.append(curve_datas.iat[j,i])
+                    case 5:
+                        speed.append(curve_datas.iat[j,i])
+                    case 6:
+                        step.append(curve_datas.iat[j,i])
+                    case 7:
+                        current.append(curve_datas.iat[j,i])
+                    case 8:
+                        temperature.append(curve_datas.iat[j,i])
+        plt.plot(time,torque)
+        # plt.plot(time, angle)
+        plt.plot(time, speed)
+        plt.plot(time, step)
+        plt.plot(time, current)
+        plt.plot(time, temperature)
+        plt.show()
+
+#START MAIN
+if __name__ == "__main__":
+    print('Start Downloader')
+    Downloader().downloader()
