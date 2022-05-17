@@ -75,13 +75,7 @@ class CSV_Reader(Downloader):
                         current.append(curve_datas.iat[j,i])
                     case 8:
                         temperature.append(curve_datas.iat[j,i])
-        plt.plot(time,torque)
-        # plt.plot(time, angle)
-        plt.plot(time, speed)
-        plt.plot(time, step)
-        plt.plot(time, current)
-        plt.plot(time, temperature)
-        plt.show()
+
 
 #START MAIN
 if __name__ == "__main__":
