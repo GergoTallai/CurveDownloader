@@ -1,2 +1,1 @@
-# curveScanner
-Deprag AST40 curve Scanner
+Deprag AST40 curve downloader
