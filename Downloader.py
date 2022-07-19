@@ -5,16 +5,16 @@ import numpy as np
 import time
 import os
 
-#GORBE MENTESE
+# GORBE MENTESE
 class Downloader(object):
     file_path = ''
     def downloader(self):
-        dest_folder = "curve" #MENTESI MAPPA
-        filename = "last_curve" #FAJL NEV
-        ip_address = '10.170.81.84'
+        dest_folder = "curve"
+        filename = "last_curve"
+        ip_address = 'XXX.XXX.XXX.XXX'
         url_address = 'http://{}/cgi-bin/cgiread?site=12&dlfile=/mnt/mmc/curvedata/graph.bin&dltype=csv'.format(ip_address)
 
-        #GORBE ELERESI UTVONAL
+        # GORBE ELERESI UTVONAL
         Downloader.file_path = os.getcwd() + "\\" + dest_folder + "\\" + filename
 
         # MAPPA LETREHOZASA
@@ -37,13 +37,13 @@ class Downloader(object):
         print('download time: ', round(finish - start), 's')
         CSV_Reader().csv_reader()
 
-#LETOLTOTT CSV BEOLVASA
+# LETOLTOTT CSV BEOLVASA
 class CSV_Reader(Downloader):
     def csv_reader(self):
         print(Downloader.file_path + '.csv')
         curve_datas = pd.read_csv(Downloader.file_path + '.csv', encoding = "ISO-8859-1")
 
-        #CSV ADATOK BETOLTESE ES LEVALOGATASA
+        # CSV ADATOK BETOLTESE ES LEVALOGATASA
         headers = ['Time (ms)', 'Torque', 'Angle', 'Motor Torque', 'Motor Angle', 'Speed', 'Step', 'Current (A)', 'Temperature (C)']
         time = []
         torque = []
@@ -96,7 +96,7 @@ class CSV_Reader(Downloader):
         plt.subplots_adjust(right=0.8)
         plt.show()
 
-#START MAIN
+# START MAIN
 if __name__ == "__main__":
     print('Start Downloader')
     Downloader().downloader()
